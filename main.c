@@ -1,6 +1,8 @@
 #include <stdio.h>
 # include <sys/mman.h>
 # include <unistd.h>
+# include "malloc.h"
+# include <string.h>
 
 int main(int ac, char **av){
 
@@ -11,11 +13,22 @@ int main(int ac, char **av){
     }
   int i = 0;
   int nb = atoi(av[1]);
-  char *str = (char*)malloc(nb);
-  while (i < nb)
+  void *str = malloc(nb);
+  void *str2 = malloc(nb);
+  //  strcpy(str2, "Salut toi comment tu va?");
+  /*while (i < nb)
+    {
       str[i++] = 'a';
+    }
+  str[i - 1] = 'u';
+  str[i - 2] = 'i';
   str[i] = '\0';
-  printf("str=={%d} get=={%d} word=={%s}\n", nb, getpagesize(), str);
+  */
+  //  i -= nb;
+  //  printf("str ==%ld %ld %c\n", &str[i], &str[i] + 4096, str[i + 4097]);
+  printf("str2 ==%ld %ld\n", &str, &str2);
+  printf("str3 ==%s %d\n", str, strlen(str));
+  while (1);
   return (0);
 }
 

@@ -20,6 +20,8 @@ LINK_NAME		=	libft_malloc.so
 
 CC			=	gcc
 
+LIBFT			= 	-L./libft/ -lft
+
 CFLAGS			=	-Wall -Wextra -Werror
 
 SRCS			=	malloc.c \
@@ -33,7 +35,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft/
-	@$(CC) -shared $(SRCS) -o $(NAME)
+	@$(CC) -I ./libft $(LIBFT) -shared $(SRCS) -o $(NAME)
 	@echo "\033[H\033[2J\033[32;5m[OK...]"
 	ln -s $(NAME) $(LINK_NAME)
 
