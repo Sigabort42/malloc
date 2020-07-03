@@ -25,6 +25,7 @@ LIBFT			= 	-L./libft/ -lft
 CFLAGS			=	-Wall -Wextra -Werror
 
 SRCS			=	malloc.c \
+				find.c \
 
 
 OBJ			=	$(SRCS:.c=.o)
