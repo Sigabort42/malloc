@@ -1,4 +1,4 @@
-#include "malloc.h"
+#include "../malloc.h"
 
 int	allocate_new_page(t_page *page, size_t size)
 {

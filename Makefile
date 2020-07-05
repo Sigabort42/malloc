@@ -24,10 +24,12 @@ LIBFT			= 	-L./libft/ -lft
 
 CFLAGS			=	-Wall -Wextra -Werror
 
-SRCS			=	malloc.c \
-				find.c \
-				free.c \
-				realloc.c \
+PATH_SRCS		=	srcs/
+
+SRCS			=	$(PATH_SRCS)malloc.c \
+				$(PATH_SRCS)find.c \
+				$(PATH_SRCS)free.c \
+				$(PATH_SRCS)realloc.c \
 
 
 OBJ			=	$(SRCS:.c=.o)

@@ -1,4 +1,4 @@
-#include "malloc.h"
+#include "../malloc.h"
 
 void		merge(t_chunk *chunk)
 {
