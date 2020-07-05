@@ -6,8 +6,7 @@ int	allocate_new_page(t_page *page, size_t size)
 
   if ((e = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (1);
-  
-  if (size <= TINY)
+  else if (size <= TINY)
     {
       e->chunk = CALL_TINY;
       e->chunk->size = TINY;
@@ -27,7 +26,6 @@ void	split(t_chunk *chunk, size_t size)
 {
   t_chunk	*new;
 
-  dprintf(1, "split new2 %p %zu|||%zu\n", chunk, chunk->size, size);
   new = (void*)((void*)chunk + size + sizeof(t_chunk));
   new->size = chunk->size - size - sizeof(t_chunk);
   new->free = 1;
@@ -35,7 +33,6 @@ void	split(t_chunk *chunk, size_t size)
   chunk->size = size;
   chunk->free = 0;
   chunk->next = new;
-  dprintf(1, "split new2 %p %zu %p %zu|||%zu\n", new, new->size, chunk, chunk->size, size);
 }
 
 void	*find(t_page *page, size_t size)

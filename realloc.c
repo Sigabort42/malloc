@@ -4,7 +4,6 @@ t_chunk		*search(void *ptr)
 {
   t_page	*page;
   t_chunk	*curr;
-  t_chunk	*tmp;
   int		i;
 
   i = 0;
@@ -16,16 +15,11 @@ t_chunk		*search(void *ptr)
 	  curr = page->chunk;
 	  while (curr)
 	    {
-	      tmp = curr;
-	      dprintf(1, "search %p\n", tmp);
-	      if (++tmp == ptr)
-		{
-		  dprintf(1, "search success\n");
-		  return (--tmp);
-		}
+	      if (++curr == ptr)
+		  return (--curr);
+	      --curr;
 	      curr = curr->next;
 	    }
-	  
 	  page = page->next;
 	}
       i++;
