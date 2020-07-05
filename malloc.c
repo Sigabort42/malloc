@@ -21,6 +21,7 @@ int	initialize()
 
 void	*malloc(size_t size)
 {
+  dprintf(1, "ENTER MALLOC\n");
   if (!(*pages))
     if (initialize())
       return (0);

@@ -13,18 +13,25 @@ int main(int ac, char **av){
     }
   int i = 0;
   int nb = atoi(av[1]);
-  char *str = malloc(nb);
-  char *str2 = malloc(nb);
+  char *str = malloc(nb + 1);
+  printf("address str %p\n", str);
+  char *str2 = malloc(nb + 1);
+  printf("address str2 %p\n", str2);
   strcpy(str2, "Salut toi comment tu va?");
   while (i < nb)
     {
       str[i++] = 'a';
-      }
+    }
   str[i - 1] = 'u';
   str[i - 2] = 'i';
   str[i] = '\0';
-  printf("str2 ==%p %p\n", &str, &str2);
-  printf("str3 ==%s\n", str);
+  printf("str1 ==%p %p %p\n", str, str2, realloc(str, 200));
+  printf("str2 ==%p %p\n", str, str2);
+  printf("str3 ==%s %p\n", str2, str2);
+  free(str);
+  free(str2);
+  printf("str ==%s %p\n", str, str);
+  printf("str2 ==%s %p\n", str2, str2);
   while (1);
   return (0);
 }

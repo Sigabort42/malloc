@@ -26,6 +26,8 @@ CFLAGS			=	-Wall -Wextra -Werror
 
 SRCS			=	malloc.c \
 				find.c \
+				free.c \
+				realloc.c \
 
 
 OBJ			=	$(SRCS:.c=.o)
