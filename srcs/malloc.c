@@ -7,11 +7,15 @@ int	initialize()
     return (1);
   if ((pages[E_SMALL] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (1);
-  pages[E_TINY]->chunk = CALL_TINY;
+  if ((pages[E_LARGE] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+    return (1);
+  if ((pages[E_TINY]->chunk = CALL_TINY) == MAP_FAILED)
+    return (1);
   pages[E_TINY]->chunk->size = TINY;
   pages[E_TINY]->chunk->free = 1;
   pages[E_TINY]->chunk->next = NULL;
-  pages[E_SMALL]->chunk = CALL_SMALL;
+  if ((pages[E_SMALL]->chunk = CALL_SMALL) == MAP_FAILED)
+    return (1);
   pages[E_SMALL]->chunk->size = SMALL;
   pages[E_SMALL]->chunk->free = 1;
   pages[E_SMALL]->chunk->next = NULL;
@@ -21,10 +25,13 @@ int	initialize()
 
 void	*malloc(size_t size)
 {
+  t_chunk	*curr;
+  
   dprintf(1, "ENTER MALLOC\n");
   if (!(*pages))
     if (initialize())
       return (0);
+  dprintf(1, "ENTER MALLOC2\n");
   if (size <= TINY)
     {
       dprintf(1, "Find tiny\n");
@@ -35,5 +42,20 @@ void	*malloc(size_t size)
       dprintf(1, "Find Small\n");
       return (find(pages[E_SMALL], size));
     }
-  return CALL_LARGE(size);
+  else
+    {
+      dprintf(1, "Find Large\n");
+      curr = pages[E_LARGE]->chunk;
+      while (curr)
+	curr = curr->next;
+      if ((curr = CALL_LARGE(size)) == MAP_FAILED)
+	return (0);
+      dprintf(1, "Large Successful\n");
+      curr->size = size;
+      curr->free = 0;
+      curr->next = NULL;
+      return (++curr);
+    }
+  dprintf(1, "ENTER MALLOC3\n");
+  return (0);
 }

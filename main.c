@@ -25,11 +25,12 @@ int main(int ac, char **av){
   str[i - 1] = 'u';
   str[i - 2] = 'i';
   str[i] = '\0';
-  printf("str1 ==%p %p %p\n", str, str2, realloc(str, 200));
+  printf("str1 ==%p %p\n", str, str2);
+  str = realloc(str, 200);
   printf("str2 ==%p %p\n", str, str2);
   printf("str3 ==%s %p\n", str2, str2);
-  free(str);
-  free(str2);
+  //  free(str);
+  //free(str2);
   printf("str ==%s %p\n", str, str);
   printf("str2 ==%s %p\n", str2, str2);
   while (1);

@@ -3,7 +3,7 @@
 
 # define CALL_TINY (mmap(0, getpagesize() * 1 + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
 # define CALL_SMALL (mmap(0, getpagesize() * 4 + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
-# define CALL_LARGE(n) (mmap(0, n, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
+# define CALL_LARGE(n) (mmap(0, n + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
 
 # define TINY ((size_t)getpagesize() * 1)
 # define SMALL ((size_t)getpagesize() * 4)
@@ -17,6 +17,7 @@ enum
 {
  E_TINY,
  E_SMALL,
+ E_LARGE,
  E_FREE,
 };
 
@@ -34,7 +35,7 @@ typedef struct		s_page
 }			t_page;
 
 
-struct s_page *pages[2];
+struct s_page *pages[3];
 
 
 void		free(void *ptr);

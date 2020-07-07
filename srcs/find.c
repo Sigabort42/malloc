@@ -40,34 +40,38 @@ void	*find(t_page *page, size_t size)
   dprintf(1, "enter find %zu\n", size);
   t_chunk	*chunk;
   int		i;
+  int		f;
 
   i = 0;
   while (page)
     {
       chunk = page->chunk;
-      dprintf(1, "Boucle %d %zu %p\n", i, size, page);
-      while ((chunk->size < size || !chunk->free) && chunk->next)
+      dprintf(1, "Boucle %d %zu %p %d\n", i, size, page, chunk->free);
+      f = ((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1;
+      while ((chunk->size < size || !chunk->free || f) && chunk->next)
 	{
-	  dprintf(1, "One block checked %p|%zu\n", chunk, chunk->size);
+	  dprintf(1, "One block checked %p|%zu|%d|%d\n", chunk, chunk->size, chunk->free, f);
 	  chunk = chunk->next;
+	  f = ((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1;
 	}
-      dprintf(1, "ENd block checked %zu|%d\n", chunk->size, chunk->free);
+      f = ((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1;
+      dprintf(1, "ENd block checked %p|%zu|%d\n", chunk, chunk->size, chunk->free);
       if (chunk->size == size && chunk->free)
 	{
 	  dprintf(1, "Equal chunk->size\n");
 	  chunk->free = 0;
 	  return ((void*)(++chunk));
 	}
-      dprintf(1, "2ENd block checked %zu|%d\n", chunk->size, chunk->free);
-      if (chunk->size > size + sizeof(t_chunk) && chunk->free)
+      dprintf(1, "2ENd block checked %zu|%d|%d|%d\n", chunk->size, chunk->free, (int)(chunk->size - size - sizeof(t_chunk)), f);
+      if (chunk->size > size && !f && chunk->free)
 	{
-	  dprintf(1, "split alocate %p\n", chunk);
+	  dprintf(1, "split alocate %p|%zu\n", chunk, size);
 	  split(chunk, size);
-	  dprintf(1, "split alocated %p|\n", chunk);
+	  dprintf(1, "split alocated %p|%zu|%zu\n", chunk, chunk->size, size);
 	  return ((void*)(++chunk));
 	}
       dprintf(1, "3ENd block checked %zu|%d\n", chunk->size, chunk->free);
-      if ((chunk->size <= size || !chunk->free) && !page->next)
+      if ((f || chunk->size <= size || !chunk->free) && !page->next)
 	{
 	  dprintf(1, "Allocate new page %p|%p\n", page, page->next);
 	  if (allocate_new_page(page, size))
