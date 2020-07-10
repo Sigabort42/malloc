@@ -30,6 +30,7 @@ SRCS			=	$(PATH_SRCS)malloc.c \
 				$(PATH_SRCS)find.c \
 				$(PATH_SRCS)free.c \
 				$(PATH_SRCS)realloc.c \
+				$(PATH_SRCS)show_alloc_mem.c \
 
 
 OBJ			=	$(SRCS:.c=.o)
