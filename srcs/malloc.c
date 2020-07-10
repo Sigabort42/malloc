@@ -31,7 +31,6 @@ void	*malloc(size_t size)
   if (!(*pages))
     if (initialize())
       return (0);
-  dprintf(1, "ENTER MALLOC2\n");
   if (size <= TINY)
     {
       dprintf(1, "Find tiny\n");
@@ -46,16 +45,28 @@ void	*malloc(size_t size)
     {
       dprintf(1, "Find Large\n");
       curr = pages[E_LARGE]->chunk;
+      if (!curr)
+	{
+	  if ((curr = CALL_LARGE(size)) == MAP_FAILED)
+	    return (0);
+	  dprintf(1, "Large Successful chunk\n");
+	  curr->size = size;
+	  curr->free = 0;
+	  curr->next = NULL;
+	  pages[E_LARGE]->chunk = curr;
+	  return (++curr);
+	}
+      curr = pages[E_LARGE]->chunk;
       while (curr)
 	curr = curr->next;
       if ((curr = CALL_LARGE(size)) == MAP_FAILED)
 	return (0);
-      dprintf(1, "Large Successful\n");
+      dprintf(1, "Large Successful curr\n");
       curr->size = size;
       curr->free = 0;
       curr->next = NULL;
       return (++curr);
     }
-  dprintf(1, "ENTER MALLOC3\n");
+  dprintf(1, "END MALLOC\n");
   return (0);
 }

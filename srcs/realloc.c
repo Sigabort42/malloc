@@ -46,7 +46,7 @@ void            *realloc(void *ptr, size_t size)
       dprintf(1, "REALLOC search %p|%p|%s|%zu|%zu\n", ptr, tmp, (char*)ptr, tmp->size, size);
       data = malloc((size_t)(tmp->size + size + sizeof(t_chunk)));
       ft_memmove((void*)data, (void*)tmp, (size_t)(tmp->size + sizeof(t_chunk)));
-      dprintf(1, "REALLOC search2 %p|%p|%s|%p|%zu|%d|%d\n", ptr, tmp, (char*)ptr, data, data->size, data->free, tmp->free);
+      dprintf(1, "REALLOC search2 %p|%p|%p|%zu|%d|%d\n", ptr, tmp, data, data->size, data->free, tmp->free);
       data->size += size + sizeof(t_chunk);
       free(ptr);
       dprintf(1, "REALLOC search3 %p|%p|%s|%p|%zu|%d|%d\n", ptr, tmp, (char*)ptr, data, data->size, data->free, tmp->free);

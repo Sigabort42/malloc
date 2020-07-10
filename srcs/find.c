@@ -1,4 +1,5 @@
 #include "../malloc.h"
+# define F(chunk_size, size)	(((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1)
 
 int	allocate_new_page(t_page *page, size_t size)
 {
@@ -38,6 +39,7 @@ void	split(t_chunk *chunk, size_t size)
 void	*find(t_page *page, size_t size)
 {
   dprintf(1, "enter find %zu\n", size);
+  show_alloc_mem();
   t_chunk	*chunk;
   int		i;
   int		f;
@@ -47,14 +49,11 @@ void	*find(t_page *page, size_t size)
     {
       chunk = page->chunk;
       dprintf(1, "Boucle %d %zu %p %d\n", i, size, page, chunk->free);
-      f = ((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1;
-      while ((chunk->size < size || !chunk->free || f) && chunk->next)
+      while (((f = F(chunk->size, size)) || chunk->size < size || !chunk->free) && chunk->next)
 	{
-	  dprintf(1, "One block checked %p|%zu|%d|%d\n", chunk, chunk->size, chunk->free, f);
+	  dprintf(1, "One block checked %p|%zu|%d\n", chunk, chunk->size, chunk->free);
 	  chunk = chunk->next;
-	  f = ((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1;
 	}
-      f = ((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1;
       dprintf(1, "ENd block checked %p|%zu|%d\n", chunk, chunk->size, chunk->free);
       if (chunk->size == size && chunk->free)
 	{
@@ -62,7 +61,7 @@ void	*find(t_page *page, size_t size)
 	  chunk->free = 0;
 	  return ((void*)(++chunk));
 	}
-      dprintf(1, "2ENd block checked %zu|%d|%d|%d\n", chunk->size, chunk->free, (int)(chunk->size - size - sizeof(t_chunk)), f);
+      dprintf(1, "2ENd block checked %zu|%d|%d\n", chunk->size, chunk->free, (int)(chunk->size - size - sizeof(t_chunk)));
       if (chunk->size > size && !f && chunk->free)
 	{
 	  dprintf(1, "split alocate %p|%zu\n", chunk, size);
