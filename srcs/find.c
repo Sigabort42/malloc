@@ -1,11 +1,11 @@
 #include "../malloc.h"
-# define F(chunk_size, size)	(((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1)
 
 int	allocate_new_page(t_page *page, size_t size)
 {
   t_page	*e;
 
-  if ((e = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+  if ((e = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON |
+		MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (1);
   else if (size <= TINY)
     {
@@ -30,6 +30,7 @@ void	split(t_chunk *chunk, size_t size)
   new = (void*)((void*)chunk + size + sizeof(t_chunk));
   new->size = chunk->size - size - sizeof(t_chunk);
   new->free = 1;
+  new->next = NULL;
   new->next = chunk->next;
   chunk->size = size;
   chunk->free = 0;
@@ -39,7 +40,7 @@ void	split(t_chunk *chunk, size_t size)
 void	*find(t_page *page, size_t size)
 {
   dprintf(1, "enter find %zu\n", size);
-  show_alloc_mem();
+  //  show_alloc_mem();
   t_chunk	*chunk;
   int		i;
   int		f;
@@ -49,12 +50,13 @@ void	*find(t_page *page, size_t size)
     {
       chunk = page->chunk;
       dprintf(1, "Boucle %d %zu %p %d\n", i, size, page, chunk->free);
-      while (((f = F(chunk->size, size)) || chunk->size < size || !chunk->free) && chunk->next)
+      while (((f = F(chunk->size, size)) || chunk->size < size ||
+	      !chunk->free) && chunk->next)
 	{
-	  dprintf(1, "One block checked %p|%zu|%d\n", chunk, chunk->size, chunk->free);
+	  dprintf(1, "One block checked %p|%zu|%d|%d\n", chunk + sizeof(t_chunk), chunk->size, chunk->free, f);
 	  chunk = chunk->next;
 	}
-      dprintf(1, "ENd block checked %p|%zu|%d\n", chunk, chunk->size, chunk->free);
+      dprintf(1, "ENd block checked %p|%zu|%d\n", chunk + sizeof(t_chunk), chunk->size, chunk->free);
       if (chunk->size == size && chunk->free)
 	{
 	  dprintf(1, "Equal chunk->size\n");
@@ -64,9 +66,9 @@ void	*find(t_page *page, size_t size)
       dprintf(1, "2ENd block checked %zu|%d|%d\n", chunk->size, chunk->free, (int)(chunk->size - size - sizeof(t_chunk)));
       if (chunk->size > size && !f && chunk->free)
 	{
-	  dprintf(1, "split alocate %p|%zu\n", chunk, size);
+	  dprintf(1, "split alocate %p|%zu\n", chunk + sizeof(t_chunk), size);
 	  split(chunk, size);
-	  dprintf(1, "split alocated %p|%zu|%zu\n", chunk, chunk->size, size);
+	  dprintf(1, "split alocated %p|%zu|%zu\n", chunk + sizeof(t_chunk), chunk->size, size);
 	  return ((void*)(++chunk));
 	}
       dprintf(1, "3ENd block checked %zu|%d\n", chunk->size, chunk->free);

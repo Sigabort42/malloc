@@ -5,6 +5,9 @@
 # define CALL_SMALL (mmap(0, getpagesize() * 4 + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
 # define CALL_LARGE(n) (mmap(0, n + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
 
+# define F(chunk_size, size) (((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1)
+
+
 # define TINY ((size_t)getpagesize() * 1)
 # define SMALL ((size_t)getpagesize() * 4)
 

@@ -65,6 +65,8 @@ void	*malloc(size_t size)
       curr->size = size;
       curr->free = 0;
       curr->next = NULL;
+      //      if (pages[E_LARGE]->chunk == NULL)
+      //pages[E_LARGE]->chunk = curr;
       return (++curr);
     }
   dprintf(1, "END MALLOC\n");
