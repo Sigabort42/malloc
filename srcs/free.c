@@ -7,7 +7,6 @@ void		merge(t_chunk *chunk)
   curr = chunk;
   while (curr && curr->next)
     {
-      //      dprintf(1, "currr %p %d %d\n", curr, curr->free, curr->next->free);
       if (curr->free && curr->next->free)
 	{
 	  curr->size += curr->next->size + sizeof(t_chunk);
@@ -16,6 +15,7 @@ void		merge(t_chunk *chunk)
       curr = curr->next;
     }
 }
+
 
 
 void		free(void *ptr)

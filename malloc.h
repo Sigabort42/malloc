@@ -44,6 +44,7 @@ struct s_page *pages[3];
 void		show_alloc_mem();
 void		free(void *ptr);
 void		*malloc(size_t size);
+void		*calloc(size_t nmemb, size_t sizem);
 void		*realloc(void *ptr, size_t size);
 void		*find(t_page *page, size_t size);
 

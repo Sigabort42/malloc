@@ -2,7 +2,6 @@
 
 void		show_alloc_mem()
 {
-  dprintf(1, "show alloc mem\n\n");
   t_page	*page;
   t_chunk	*curr;
   char		data[3][6];
@@ -26,16 +25,9 @@ void		show_alloc_mem()
 	    dprintf(1, "Page %d : %p\n", idx, curr + sizeof(t_chunk));
 	  while (curr)
 	    {
-	      //	      if (getenv("MALLOC_DEBUG"))
-	      //{
-	      dprintf(1, "%p - %p : %zu octets free : %d\n",
-		      curr + sizeof(t_chunk), curr->next + sizeof(t_chunk),
-		      curr->size, curr->free);
-		  //}
-		  //	      else
-		  //		dprintf(1, "%p - %p : %zu octets\n",
-		  //	curr + sizeof(t_chunk), curr->next + sizeof(t_chunk),
-		  //	curr->size);
+		  dprintf(1, "%p - %p : %zu octets free : %d\n",
+			  curr + sizeof(t_chunk), curr->next + sizeof(t_chunk),
+			  curr->size, curr->free);
 	      curr = curr->next;
 	    }
 	  page = page->next;
