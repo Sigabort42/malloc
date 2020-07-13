@@ -1,6 +1,6 @@
 # malloc
 
-Librairie de gestion d'allocation dynamique de la mémoire. Afin de pouvoir la faire utiliser par des programmes déjà existant sans les modifier ni les recompiler.
+Librairie de gestion d'allocation dynamique de la mémoire. Afin de pouvoir la faire utiliser par des programmes déjà existant tels que ls, id, etc... sans les modifier ni les recompiler.
 - [x] Malloc(3) de la libc
 - [x] Free(3) de la libc
 - [x] Realloc(3) de la libc
