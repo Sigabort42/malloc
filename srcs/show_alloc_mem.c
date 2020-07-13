@@ -13,7 +13,6 @@ void		show_alloc_mem()
   ft_strcpy(data[0], "TINY");
   ft_strcpy(data[1], "SMALL");
   ft_strcpy(data[2], "LARGE");
-  dprintf(1, "OKOK\n");
   while (i < 3)
     {
       page = pages[i];
@@ -36,5 +35,4 @@ void		show_alloc_mem()
       idx = 0;
       i++;
     }
-  dprintf(1, "ENDDDD\n");
 }
