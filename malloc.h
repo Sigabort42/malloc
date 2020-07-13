@@ -11,9 +11,11 @@
 # define TINY ((size_t)getpagesize() * 1)
 # define SMALL ((size_t)getpagesize() * 4)
 
+# include <errno.h>
 # include <stdio.h>
 # include <sys/mman.h>
 # include <unistd.h>
+# include <pthread.h>
 # include "libft/libft.h"
 
 enum
@@ -37,8 +39,18 @@ typedef struct		s_page
   struct s_page		*next;
 }			t_page;
 
+typedef struct		s_mutex
+{
+  pthread_mutex_t	m_malloc;
+  pthread_mutex_t	m_calloc;
+  pthread_mutex_t	m_realloc;
+  pthread_mutex_t	m_free;
+  pthread_mutex_t	m_show_alloc_mem;
+}			t_mutex;
 
-struct s_page *pages[3];
+
+struct s_page		*pages[3];
+struct s_mutex		g_mutex;
 
 
 void		show_alloc_mem();

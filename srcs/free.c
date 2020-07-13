@@ -24,6 +24,11 @@ void		free(void *ptr)
   t_chunk	*curr;
   int		i;
 
+  if (pthread_mutex_lock(&g_mutex.m_free) == EINVAL)
+    {
+      pthread_mutex_init(&g_mutex.m_free, NULL);
+      pthread_mutex_lock(&g_mutex.m_free);
+    }
   i = 0;
   page = pages[i];
   while (i < 3)
@@ -38,6 +43,7 @@ void		free(void *ptr)
 		  --curr;
 		  curr->free = 1;
 		  merge(page->chunk);
+		  pthread_mutex_unlock(&g_mutex.m_free);
 		  return ;
 		}
 	      --curr;
@@ -47,4 +53,5 @@ void		free(void *ptr)
 	}
       i++;
     }
+  pthread_mutex_unlock(&g_mutex.m_free);
 }

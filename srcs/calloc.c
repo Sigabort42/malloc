@@ -29,7 +29,12 @@ void    *calloc(size_t nmemb, size_t sizem)
   t_chunk       *curr;
   size_t	size;
   void		*data;
-  
+
+  if (pthread_mutex_lock(&g_mutex.m_calloc) == EINVAL)
+    {
+      pthread_mutex_init(&g_mutex.m_calloc, NULL);
+      pthread_mutex_lock(&g_mutex.m_calloc);
+    }
   size = nmemb * sizem;
   if (!size)
     return (NULL);
@@ -69,5 +74,6 @@ void    *calloc(size_t nmemb, size_t sizem)
       ft_bzero(data, curr->size);
       return (data);
     }
+  pthread_mutex_unlock(&g_mutex.m_calloc);
   return (0);
 }

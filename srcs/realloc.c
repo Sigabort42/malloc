@@ -36,16 +36,16 @@ void            *realloc(void *ptr, size_t size)
   if (!ptr)
     return (malloc(size));
   else if (!size && ptr)
-      free(ptr);
+    free(ptr);
   else
     {
       if (!(tmp = search(ptr)))
-	  return (ptr);
+	return (ptr);
       data = (t_chunk*)malloc((size_t)(tmp->size + size + sizeof(t_chunk)));
       ft_memmove((void*)data, (void*)tmp, (size_t)(tmp->size + sizeof(t_chunk)));
       data->size += size + sizeof(t_chunk);
       free(ptr);
       return (++data);
-    }  
+    }
   return (0);
 }
