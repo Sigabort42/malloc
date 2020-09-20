@@ -18,7 +18,7 @@ NAME			=	libft_malloc$(HOSTTYPE).so
 
 LINK_NAME		=	libft_malloc.so
 
-CC			=	gcc
+CC			=	gcc -fsanitize=address
 
 LIBFT			= 	-L./libft/ -lft
 
@@ -26,14 +26,14 @@ CFLAGS			=	-Wall -Wextra -Werror
 
 PATH_SRCS		=	srcs/
 
-SRCS			=	$(PATH_SRCS)malloc.c \
+SRC			=	$(PATH_SRCS)malloc.c \
 				$(PATH_SRCS)find.c \
 				$(PATH_SRCS)free.c \
 				$(PATH_SRCS)realloc.c \
 				$(PATH_SRCS)show_alloc_mem.c \
 #				$(PATH_SRCS)calloc.c \
 
-OBJ			=	$(SRCS:.c=.o)
+OBJ			=	$(SRC:.c=.o)
 
 HEADER			=	libft.h
 
@@ -41,9 +41,12 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft/
-	@$(CC) -I ./libft $(LIBFT) -shared $(SRCS) -o $(NAME)
+	@$(CC) $(CFLAGS) -I ./libft $(LIBFT) -shared $(SRC) -o $(NAME)
 	@echo "\033[H\033[2J\033[32;5m[OK...]"
 	ln -s $(NAME) $(LINK_NAME)
+
+%.o : %.c
+	@$(CC) $(CFLAGS) -I ./libft -c $< -o $@
 
 clean:
 	@make -C libft/ clean

@@ -2,14 +2,11 @@
 
 int     ft_initialize()
 {
-  if ((pages[E_TINY] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_P\
-RIVATE, -1, 0)) == MAP_FAILED)
+  if ((pages[E_TINY] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (1);
-  if ((pages[E_SMALL] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_\
-PRIVATE, -1, 0)) == MAP_FAILED)
+  if ((pages[E_SMALL] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (1);
-  if ((pages[E_LARGE] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_\
-PRIVATE, -1, 0)) == MAP_FAILED)
+  if ((pages[E_LARGE] = mmap(0, sizeof(t_page), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
     return (1);
   if ((pages[E_TINY]->chunk = CALL_TINY) == MAP_FAILED)
     return (1);

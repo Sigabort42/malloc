@@ -51,8 +51,10 @@ void	*malloc(size_t size)
       pthread_mutex_init(&g_mutex.m_malloc, NULL);
       pthread_mutex_lock(&g_mutex.m_malloc);
     }
-  if (!size)
-    data = NULL;
+  if (size <= 0)
+    return (NULL);
+  //if (!size)
+  //data = NULL;
   else if (!(*pages))
     if (initialize())
       return (0);
