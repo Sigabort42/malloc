@@ -15,7 +15,7 @@ void		show_alloc_mem()
   ft_strcpy(data[2], "LARGE");
   while (i < 3)
     {
-      page = pages[i];
+      page = g_pages[i];
       dprintf(1, "%s : %p\n", data[i], page);
       while (page)
 	{

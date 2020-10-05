@@ -1,16 +1,15 @@
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
+# define TINY ((size_t)getpagesize() * 42)
+# define SMALL ((size_t)getpagesize() * 84)
 
-# define CALL_TINY (mmap(0, getpagesize() * 1 + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
-# define CALL_SMALL (mmap(0, getpagesize() * 4 + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
+# define CALL_TINY (mmap(0, TINY + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
+# define CALL_SMALL (mmap(0, SMALL + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
 # define CALL_LARGE(n) (mmap(0, n + sizeof(t_chunk), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0))
 
 # define F(chunk_size, size) (((int)(chunk->size - size - sizeof(t_chunk)) > 0) ? 0 : 1)
 
-
-# define TINY ((size_t)getpagesize() * 1)
-# define SMALL ((size_t)getpagesize() * 4)
-
+# include <stddef.h>
 # include <errno.h>
 # include <stdio.h>
 # include <sys/mman.h>
@@ -49,7 +48,7 @@ typedef struct		s_mutex
 }			t_mutex;
 
 
-struct s_page		*pages[3];
+struct s_page		*g_pages[3];
 struct s_mutex		g_mutex;
 
 

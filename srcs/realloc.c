@@ -9,7 +9,7 @@ t_chunk		*search(void *ptr)
   i = 0;
   while (i < 3)
     {
-      page = pages[i];
+      page = g_pages[i];
       while (page)
 	{
 	  curr = page->chunk;
@@ -40,7 +40,7 @@ void            *realloc(void *ptr, size_t size)
   else
     {
       if (!(tmp = search(ptr)))
-	return (ptr);
+	return (NULL);
       data = (t_chunk*)malloc((size_t)(tmp->size + size + sizeof(t_chunk)));
       ft_memmove((void*)data, (void*)tmp, (size_t)(tmp->size + sizeof(t_chunk)));
       data->size += size + sizeof(t_chunk);

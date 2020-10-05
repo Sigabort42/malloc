@@ -1,7 +1,9 @@
-#include <stdio.h>
-# include <sys/mman.h>
-# include <unistd.h>
-# include "malloc.h"
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <time.h>
+#include "malloc.h"
+
 
 int main(int ac, char **av){
 
@@ -28,9 +30,9 @@ int main(int ac, char **av){
   str = realloc(str, 200);
   printf("str2 ==%p %p\n", str, str2);
   printf("str3 ==%s %p\n", str2, str2);
+  //  show_alloc_mem();
   free(str);
   free(str2);
-  //show_alloc_mem();
-  while (1);
+  //  while (1);
   return (0);
 }

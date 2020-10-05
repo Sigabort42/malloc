@@ -16,8 +16,6 @@ void		merge(t_chunk *chunk)
     }
 }
 
-
-
 void		free(void *ptr)
 {
   t_page	*page;
@@ -30,7 +28,7 @@ void		free(void *ptr)
       pthread_mutex_lock(&g_mutex.m_free);
     }
   i = 0;
-  page = pages[i];
+  page = g_pages[i];
   while (i < 3)
     {
       while (page)
@@ -43,6 +41,8 @@ void		free(void *ptr)
 		  --curr;
 		  curr->free = 1;
 		  merge(page->chunk);
+		  //		  if (i == 2)
+		  munmap((void*)curr, curr->size);
 		  pthread_mutex_unlock(&g_mutex.m_free);
 		  return ;
 		}

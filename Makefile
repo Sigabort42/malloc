@@ -18,7 +18,7 @@ NAME			=	libft_malloc$(HOSTTYPE).so
 
 LINK_NAME		=	libft_malloc.so
 
-CC			=	gcc -fsanitize=address
+CC			=	gcc #-fsanitize=address
 
 LIBFT			= 	-L./libft/ -lft
 
